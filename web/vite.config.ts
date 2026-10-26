@@ -2,6 +2,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
+import { configDefaults } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -126,6 +127,8 @@ export default defineConfig({
     // the "Calendars as of" time): a developer's own zone must not change results.
     env: { TZ: 'UTC' },
     include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.mjs'],
+    // Contract tests need the server binary: `npm run test:contract` (vitest.contract.config.ts).
+    exclude: [...configDefaults.exclude, 'src/**/*.contract.test.ts'],
     // Token tests read index.css as text (src/ui/tokens); other CSS stays stubbed.
     css: { include: [/index\.css/] },
   },

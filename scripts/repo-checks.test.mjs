@@ -283,6 +283,11 @@ test('browser end-to-end checks run in CI and the race detector nightly', () => 
   assert.match(nightly, /go test -race /)
 })
 
+test('the sync client contract tests run against the built server', () => {
+  const server = jobsOf(read('.github/workflows/ci.yml')).server ?? ''
+  assert.ok(server.indexOf('run: npm run test:contract') > server.indexOf('-o bin/opentodo ./cmd/opentodo'), 'the server job runs npm run test:contract after building bin/opentodo')
+})
+
 test('Dependabot keeps every pinned ecosystem current', () => {
   const d = read('.github/dependabot.yml')
   for (const [eco, dir] of [['gomod', '/'], ['npm', '/web'], ['github-actions', '/'], ['docker', '/']]) {
