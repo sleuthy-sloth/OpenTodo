@@ -1,5 +1,6 @@
 import 'fake-indexeddb/auto'
-import { afterAll, afterEach } from 'vitest'
+import { afterAll, afterEach, beforeEach } from 'vitest'
+import { resetModuleState } from './lib/moduleState'
 
 // No test reaches the network (OpenSpec web-lint-and-test-hygiene). Unless a test
 // mocks fetch itself (vi.stubGlobal('fetch', ...), vi.spyOn(globalThis, 'fetch')),
@@ -30,3 +31,7 @@ function report(): void {
 
 afterEach(report)
 afterAll(report)
+
+// Module-level state (clocks, caches, stores) starts fresh in every test: each
+// stateful module registers its reset with src/lib/moduleState.ts.
+beforeEach(resetModuleState)
